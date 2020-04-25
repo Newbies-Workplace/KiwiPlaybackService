@@ -5,6 +5,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import pl.teamkiwi.domain.`interface`.PlaybackSessionRepository
 import pl.teamkiwi.domain.model.entity.PlaybackSession
 import pl.teamkiwi.infrastructure.repository.exposed.dao.PlaybackSessionDAO
+import pl.teamkiwi.infrastructure.repository.exposed.dao.SongDAO
 import pl.teamkiwi.infrastructure.repository.exposed.table.Songs
 
 class PlaybackSessionExposedRepository : PlaybackSessionRepository {
@@ -12,7 +13,7 @@ class PlaybackSessionExposedRepository : PlaybackSessionRepository {
     override fun save(session: PlaybackSession): PlaybackSession =
         transaction {
             PlaybackSessionDAO.new(session.id) {
-                lastPlayedSong = EntityID(session.lastPlayedSong?.id, Songs)
+                lastPlayedSong = SongDAO(EntityID(session.lastPlayedSong?.id, Songs))
             }.toPlaybackSession()
         }
 

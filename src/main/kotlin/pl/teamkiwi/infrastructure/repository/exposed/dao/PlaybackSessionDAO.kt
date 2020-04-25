@@ -9,11 +9,11 @@ import pl.teamkiwi.infrastructure.repository.exposed.table.StringIdEntityClass
 class PlaybackSessionDAO(id: EntityID<String>) : StringIdEntity(id) {
     companion object : StringIdEntityClass<PlaybackSessionDAO>(PlaybackSessions)
 
-    var lastPlayedSong by PlaybackSessions.lastPlayedSong
+    var lastPlayedSong by SongDAO optionalReferencedOn PlaybackSessions.lastPlayedSong
 
     fun toPlaybackSession() =
         PlaybackSession(
             id = id.value,
-            lastPlayedSongId = lastPlayedSong?.value
+            lastPlayedSong = lastPlayedSong?.toSong()
         )
 }
